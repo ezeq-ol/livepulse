@@ -55,8 +55,8 @@ if (-not (Test-Path -LiteralPath $keystore)) {
     & (Join-Path $JdkPath 'bin\keytool.exe') -genkeypair -keystore $keystore -storetype PKCS12 -storepass:file $passwordFile -keypass:file $passwordFile -alias livepulse -keyalg RSA -keysize 3072 -validity 10000 -dname 'CN=LivePulse Local, OU=Personal, O=LivePulse, C=BR'
     Check-Exit 'criar chave de assinatura'
 }
-& (Join-Path $JdkPath 'bin\java.exe') -jar (Join-Path $tools 'lib\apksigner.jar') sign --ks $keystore --ks-key-alias livepulse --ks-pass "file:$passwordFile" --out (Join-Path $build 'LivePulse-2.4.0.apk') (Join-Path $build 'aligned.apk')
+& (Join-Path $JdkPath 'bin\java.exe') -jar (Join-Path $tools 'lib\apksigner.jar') sign --ks $keystore --ks-key-alias livepulse --ks-pass "file:$passwordFile" --out (Join-Path $build 'LivePulse-2.4.1.apk') (Join-Path $build 'aligned.apk')
 Check-Exit 'assinar APK'
-& (Join-Path $JdkPath 'bin\java.exe') -jar (Join-Path $tools 'lib\apksigner.jar') verify --verbose (Join-Path $build 'LivePulse-2.4.0.apk')
+& (Join-Path $JdkPath 'bin\java.exe') -jar (Join-Path $tools 'lib\apksigner.jar') verify --verbose (Join-Path $build 'LivePulse-2.4.1.apk')
 Check-Exit 'verificar assinatura'
-Write-Output ('APK pronto: ' + (Join-Path $build 'LivePulse-2.4.0.apk'))
+Write-Output ('APK pronto: ' + (Join-Path $build 'LivePulse-2.4.1.apk'))

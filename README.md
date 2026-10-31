@@ -13,7 +13,7 @@ Radar de canais Twitch, Kick, YouTube e integrações JSON personalizadas. Execu
 
 ## Instalação e requisitos
 
-Android 8.0/API 26 ou superior. A versão atual é 2.4.0, código 20400. Autorize notificações para receber avisos. Contas, APIs e cotas dependem dos provedores. Há limitações de execução em segundo plano impostas pelo Android.
+Android 8.0/API 26 ou superior. A versão atual é 2.4.1, código 20401. Autorize notificações para receber avisos. Contas, APIs e cotas dependem dos provedores. Há limitações de execução em segundo plano impostas pelo Android.
 
 Quando uma distribuição oficial for publicada, o APK e seu SHA-256 deverão ser baixados do Release correspondente. A atualização deve usar a mesma assinatura e ser instalada por cima da anterior; desinstalar pode apagar dados. Não há URL de publicação configurada no APK entregue atualmente.
 
@@ -32,19 +32,19 @@ A chave original, senhas, credenciais e dados de usuários nunca devem entrar no
 - [Validação 2.3](VALIDACAO-2.3.txt)
 - [Dependências e atribuições](THIRD-PARTY-NOTICES.txt)
 
-140 verificações Java aprovadas na entrega 2.4.0; interface revisada com bridge simulada. Não foi executada instalação em aparelho físico conectado nem teste em hospedagem real de atualizações. Não há afiliação oficial com Twitch, Kick ou YouTube.
+140 verificações Java aprovadas na entrega 2.4.1; interface revisada com bridge simulada. Não foi executada instalação em aparelho físico conectado nem teste em hospedagem real de atualizações. Não há afiliação oficial com Twitch, Kick ou YouTube.
 
 Responsável: **by SAD_ZECKXS**. Contato: **sounoob773@gmail.com**. Publicar no GitHub não registra oficialmente o programa no INPI nem registra a marca LivePulse.
 
 ## Download e atualização
 
-[Baixar LivePulse 2.4.0](https://github.com/ezeq-ol/livepulse/releases/download/v2.4.0/LivePulse-2.4.0.apk) · [Releases](https://github.com/ezeq-ol/livepulse/releases)
+[Baixar LivePulse 2.4.1](https://github.com/ezeq-ol/livepulse/releases/download/v2.4.1/LivePulse-2.4.1.apk) · [Releases](https://github.com/ezeq-ol/livepulse/releases)
 
 Para ativar as consultas de novas versões no APK, abra Atualizações e salve:
 
 `https://raw.githubusercontent.com/ezeq-ol/livepulse/main/updates.json`
 
-A versão 2.4.0 já instalada não anunciará a si mesma como atualização: o aviso aparece quando for publicada uma versão compatível com versionCode maior. O APK entregue antes desta publicação exige configurar a URL uma vez. Os documentos de termos e privacidade estão publicados neste repositório e ainda não aparecem dentro da interface do APK 2.4.0.
+A versão 2.4.1 já instalada não anunciará a si mesma como atualização: o aviso aparece quando for publicada uma versão compatível com versionCode maior. O APK entregue antes desta publicação exige configurar a URL uma vez. Os documentos de termos e privacidade estão publicados neste repositório e ainda não aparecem dentro da interface do APK 2.4.1.
 
 
 ## Suporte
@@ -55,8 +55,10 @@ Código visível publicamente não significa autorização geral para redistribu
 
 ## Assistir nos apps das plataformas
 
-A versão 2.4.0 prioriza os apps oficiais Twitch, Kick e YouTube ao tocar em Assistir, tanto na notificação como no histórico. O link original do canal ou conteúdo é preservado. Se o app não estiver instalado, estiver desativado ou não tiver uma atividade para atender ao link, o Android abre o link pela alternativa HTTPS normal, geralmente o navegador padrão. Outras integrações continuam usando HTTPS.
+A versão 2.4.1 prioriza os apps oficiais Twitch, Kick e YouTube ao tocar em Assistir, tanto na notificação como no histórico. O link original do canal ou conteúdo é preservado. Se o app não estiver instalado, estiver desativado ou não tiver uma atividade para atender ao link, o Android abre o link pela alternativa HTTPS normal, geralmente o navegador padrão. Outras integrações continuam usando HTTPS.
 
 ## Escolher o som de cada notificação
 
 Na Visão geral, toque em Editar som junto do áudio de um canal. No Estúdio, selecione o canal e o tipo de evento, escolha um arquivo, toque em Testar som e depois em Salvar mudanças. Só salvar aplica o áudio; escolher e testar mantêm os alertas atuais. Cada combinação tem seu próprio rascunho durante esta abertura do app. Descartar mudanças restaura o som salvo. Usar som herdado/original também exige salvar para remover a regra específica. O volume continua sendo uma preferência geral do app.
+
+Após Salvar mudanças, o Estúdio recarrega os dados salvos e mostra o botão Alterações salvas com sucesso. A seleção do arquivo é limpa. Ao selecionar outro canal/evento ou escolher outro áudio, os controles ficam prontos para uma nova configuração.
