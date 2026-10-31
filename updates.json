@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
   "packageName": "com.livepulse.app",
-  "versionCode": 20404,
-  "versionName": "2.4.4",
-  "apkUrl": "https://github.com/ezeq-ol/livepulse/releases/download/v2.4.4/LivePulse-2.4.4.apk",
-  "sha256": "b2080341181cb1d0447953aafedc86f6d3f573e05023cbec8f62adc48d7b6df5",
+  "versionCode": 20405,
+  "versionName": "2.4.5",
+  "apkUrl": "https://github.com/ezeq-ol/livepulse/releases/download/v2.4.5/LivePulse-2.4.5.apk",
+  "sha256": "cfffcc614c5b32489b1f0494b38b429cfb1c743cb8cf6a3f2afb93185e4a1b17",
   "sizeBytes": 2557931,
   "minSdk": 26,
-  "releaseNotes": "Client IDs de Twitch e Kick integrados; credenciais existentes preservadas. Google ainda em testes; Kick requer Secret privado."
+  "releaseNotes": "Campos de Client ID e Secret removidos da interface; credenciais salvas preservadas. Kick exige configuração privada prévia."
 }
