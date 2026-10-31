@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
   "packageName": "com.livepulse.app",
-  "versionCode": 20400,
-  "versionName": "2.4.0",
-  "apkUrl": "https://github.com/ezeq-ol/livepulse/releases/download/v2.4.0/LivePulse-2.4.0.apk",
-  "sha256": "80658b484720b4e05c61e7f9c571103cb07e042638c7da22c6158ed487893f4e",
+  "versionCode": 20401,
+  "versionName": "2.4.1",
+  "apkUrl": "https://github.com/ezeq-ol/livepulse/releases/download/v2.4.1/LivePulse-2.4.1.apk",
+  "sha256": "41e6f26dc7718a3bbbbbd9172d58c67b69693547980463fe9562b0ff10d86659",
   "sizeBytes": 2557931,
   "minSdk": 26,
-  "releaseNotes": "Novo editor de som: Editar som no cartão, canal e evento explícitos, prévia sem salvar, Salvar mudanças e Descartar. Áudio aplicado somente à combinação selecionada."
+  "releaseNotes": "Estúdio atualiza os dados após salvar, limpa o arquivo escolhido e mostra o botão Alterações salvas com sucesso. Pronto para configurar outro canal ou evento."
 }
