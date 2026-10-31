@@ -16,6 +16,7 @@ public final class LocalApi {
     private Object route(String path,String method,JSONObject b)throws Exception{
         synchronized(store){
             if(path.equals("/api/state")&&method.equals("GET"))return store.snapshot();
+            if(path.equals("/api/preview-sound")&&method.equals("POST"))return SoundBank.preview(context,store,b);
             if(path.equals("/api/updates/config")&&method.equals("POST")){Updater.configure(context,b.optString("feedUrl"),b.optBoolean("enabled",true));return store.snapshot();}
             if(path.equals("/api/updates/check")&&method.equals("POST")){Updater.check(context,true);return store.snapshot();}
             if(path.equals("/api/check")&&method.equals("POST")){Monitor.enqueue(context);return new JSONObject().put("ok",true);}

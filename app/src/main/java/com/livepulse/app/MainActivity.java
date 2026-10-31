@@ -44,7 +44,7 @@ public final class MainActivity extends Activity {
                 Uri u=request.getUrl();if(!"https".equals(u.getScheme())||!"app.livepulse.local".equals(u.getHost()))return blocked();
                 String p=u.getPath();String name=p==null||p.equals("/")?"index.html":p.substring(1);
                 if(name.matches("avatars/[a-f0-9-]{36}")){try{return new WebResourceResponse("image/jpeg",null,200,"OK",Collections.singletonMap("Cache-Control","private, max-age=86400"),new FileInputStream(Profiles.file(MainActivity.this,name.substring(8))));}catch(Exception e){return blocked();}}
-                if(!Arrays.asList("index.html","style.css","design.css","app.js","upgrade.js","upgrade.css","polish.js","polish.css","updates.js","updates.css","pulse.wav").contains(name))return blocked();
+                if(!Arrays.asList("index.html","style.css","design.css","app.js","upgrade.js","upgrade.css","polish.js","polish.css","updates.js","updates.css","sound-editor.js","sound-editor.css","pulse.wav").contains(name))return blocked();
                 try{
                     String mime=name.endsWith(".css")?"text/css":name.endsWith(".js")?"text/javascript":name.endsWith(".wav")?"audio/wav":"text/html";
                     Map<String,String> headers=new HashMap<>();headers.put("Content-Security-Policy","default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; media-src 'self' data: blob:; connect-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'none'");headers.put("X-Content-Type-Options","nosniff");
