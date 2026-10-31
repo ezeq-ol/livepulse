@@ -71,6 +71,23 @@ public final class MainActivity extends Activity {
         web.loadUrl("https://app.livepulse.local/");
         handleIntent(getIntent());
     }
+    public void configureYouTubeKey(){
+        android.widget.EditText input=new android.widget.EditText(this);
+        input.setInputType(android.text.InputType.TYPE_CLASS_TEXT|android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        input.setHint("API Key do YouTube");
+        android.app.AlertDialog dialog=new android.app.AlertDialog.Builder(this)
+            .setTitle("Consultas privadas do YouTube")
+            .setMessage("Você pode conectar sua conta Google ou configurar uma chave para consultar canais públicos. A chave será salva criptografada somente neste aparelho e não será incluída nos backups.")
+            .setView(input).setNegativeButton("Cancelar",null).setPositiveButton("Salvar neste aparelho",null).create();
+        dialog.setOnShowListener(ignored->dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener(v->{
+            String key=input.getText().toString().trim();
+            if(key.isEmpty()){input.setError("Informe uma chave para continuar.");return;}
+            try{Store store=Store.get(this);synchronized(store){store.state.getJSONObject("credentials").put("youtubeKey",key);store.save();}Monitor.clearTokens();dialog.dismiss();showMessage("Configuração privada do YouTube salva neste aparelho.");}
+            catch(Exception error){showMessage("Não foi possível salvar a configuração privada do YouTube.");}
+        }));
+        dialog.show();
+        if(dialog.getWindow()!=null)dialog.getWindow().addFlags(android.view.WindowManager.LayoutParams.FLAG_SECURE);
+    }
     public void configureKickSecret(){
         android.widget.EditText input=new android.widget.EditText(this);
         input.setInputType(android.text.InputType.TYPE_CLASS_TEXT|android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD);
@@ -85,7 +102,7 @@ public final class MainActivity extends Activity {
             try{Store store=Store.get(this);synchronized(store){store.state.getJSONObject("credentials").put("kickSecret",secret);store.save();}dialog.dismiss();Auth.connect(this,"kick");}
             catch(Exception error){showMessage("Não foi possível salvar a configuração privada da Kick.");}
         }));
-        dialog.getWindow();dialog.show();
+        dialog.show();
         if(dialog.getWindow()!=null)dialog.getWindow().addFlags(android.view.WindowManager.LayoutParams.FLAG_SECURE);
     }
     public void openUpdateInstaller(File file){
@@ -120,6 +137,7 @@ public final class MainActivity extends Activity {
         @JavascriptInterface public void installUpdate(){Updater.install(MainActivity.this);}
         @JavascriptInterface public void connectAccount(String platform){runOnUiThread(()->Auth.connect(MainActivity.this,platform));}
         @JavascriptInterface public void disconnectAccount(String platform){if(Arrays.asList("twitch","kick","youtube").contains(platform))Auth.disconnect(MainActivity.this,platform);}
+        @JavascriptInterface public void configureYouTubeApi(){runOnUiThread(()->configureYouTubeKey());}
         @JavascriptInterface public void setupGuide(String platform){runOnUiThread(()->showGuide(platform));}
         @JavascriptInterface public void exportBackup(){runOnUiThread(()->{Intent i=new Intent(Intent.ACTION_CREATE_DOCUMENT).addCategory(Intent.CATEGORY_OPENABLE).setType("application/json").putExtra(Intent.EXTRA_TITLE,"LivePulse-backup.json");startActivityForResult(i,61);});}
         @JavascriptInterface public void importBackup(){runOnUiThread(()->{Intent i=new Intent(Intent.ACTION_OPEN_DOCUMENT).addCategory(Intent.CATEGORY_OPENABLE).setType("*/*");startActivityForResult(i,62);});}

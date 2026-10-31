@@ -13,6 +13,7 @@ for(const p of ['twitch','kick','youtube']){
  const heading=$(`#${p}-status`).parentElement,container=heading.parentElement,buttons=document.createElement('div');buttons.className='account-actions';
  buttons.innerHTML=`<button type="button" class="primary" data-connect="${p}">Conectar ${names[p]}</button><button type="button" class="quiet" data-guide="${p}">Configuração guiada</button><button type="button" class="quiet" data-disconnect="${p}">Desconectar</button><p class="hint account-message" id="auth-${p}"></p>`;
  container.insertBefore(buttons,heading.nextSibling);
+ if(p==='youtube'){const privateSetup=document.createElement('button');privateSetup.type='button';privateSetup.className='quiet';privateSetup.textContent='Configurar consultas privadas';privateSetup.onclick=()=>LivePulseNative.configureYouTubeApi();buttons.append(privateSetup);}
  buttons.querySelector('[data-connect]').onclick=()=>LivePulseNative.connectAccount(p);
  buttons.querySelector('[data-guide]').onclick=()=>LivePulseNative.setupGuide(p);
  if(p!=="youtube")buttons.querySelector("[data-guide]").remove();

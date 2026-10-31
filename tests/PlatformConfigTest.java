@@ -10,7 +10,7 @@ public final class PlatformConfigTest {
   String before=saved.toString();PlatformConfig.applyDefaults(saved);
   if(!before.equals(saved.toString()))throw new AssertionError("Existing credentials changed");
   PlatformConfig.applyDefaults(fresh);
-  if(fresh.length()!=3)throw new AssertionError("Unexpected credential defaults");
+  if(fresh.length()!=2)throw new AssertionError("Unexpected credential defaults");
   System.out.println("PlatformConfigTest: 5 verificacoes aprovadas.");
  }
 }
