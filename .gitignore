@@ -1,0 +1,15 @@
+build/
+signing/
+dependencies/
+local.properties
+.env
+.env.*
+!.env.example
+*.p12
+*.jks
+*.keystore
+password.txt
+__pycache__/
+*.pyc
+*.enc
+*backup*.json

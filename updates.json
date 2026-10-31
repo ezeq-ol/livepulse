@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "packageName": "com.livepulse.app",
+  "versionCode": 20300,
+  "versionName": "2.3.0",
+  "apkUrl": "https://github.com/ezeq-ol/livepulse/releases/download/v2.3.0/LivePulse-2.3.0.apk",
+  "sha256": "da48846047e58ba5152004d3e031d520b08dd0f056c1ee7022354b76b8a02f03",
+  "sizeBytes": 2553698,
+  "minSdk": 26,
+  "releaseNotes": "Ícones de plataforma nos alertas e nova tela de atualizações, com download verificado e instalação confirmada pelo Android."
+}

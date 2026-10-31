@@ -1,0 +1,19 @@
+LivePulse Android 2.2.0
+Package: com.livepulse.app
+minSdk: 26 (Android 8.0)
+targetSdk: 35 (Android 15)
+Execucao: Java/DEX + assets locais + APIs HTTPS diretas; nenhum servidor HTTP.
+Compilacao: Android SDK Build Tools 36.1.0 e Platform 35, JDK 21.
+Assinatura: APK Signature Scheme v2 e v3.
+Testes de regras: 70 verificacoes Java aprovadas.
+Testes do projeto Windows: 8 testes aprovados.
+Teste visual: confirmacao de leitura, correcao de tipo, selecao de som e backup verificados em UI com dados de teste.
+Dados de teste nao estao no APK.
+OAuth: fluxos compilados com guias; autorizacao real pendente do cadastro do usuario.
+Teste em aparelho Android: pendente; nenhum dispositivo conectado.
+Teste com contas/API reais: pendente; credenciais do usuario necessarias.
+
+Novos perfis: Twitch Get Users, YouTube channel snippet e Kick users por ID.
+Consultas de fotos com credenciais reais: pendentes.
+Som por canal e selecao por evento testados em Java e Node.
+Ponte de interface Android assincrona compilada; teste em aparelho pendente.

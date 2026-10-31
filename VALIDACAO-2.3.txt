@@ -1,0 +1,7 @@
+LivePulse Android 2.3.0 (20300)
+103 verificações Java aprovadas: Rules 26, Features 27, Profile 17, Updates 33.
+JavaScript updates.js: sintaxe válida.
+Interface conferida em navegador, inclusive 390x844, com bridge simulada: sem URL e com aviso de atualização. Sem erros de console.
+Gerador de publicação: metadados reais, SHA-256/tamanho do APK e rejeição de HTTP verificados.
+APK: assinatura v2/v3 válida; mesmo certificado da versão 2.2.0; endereço remoto padrão vazio.
+Sem dispositivo Android conectado: instalação e download/instalador nativos não foram executados. Sem hospedagem real para teste remoto.
