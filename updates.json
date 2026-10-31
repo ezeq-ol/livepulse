@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
   "packageName": "com.livepulse.app",
-  "versionCode": 20300,
-  "versionName": "2.3.0",
-  "apkUrl": "https://github.com/ezeq-ol/livepulse/releases/download/v2.3.0/LivePulse-2.3.0.apk",
-  "sha256": "da48846047e58ba5152004d3e031d520b08dd0f056c1ee7022354b76b8a02f03",
+  "versionCode": 20301,
+  "versionName": "2.3.1",
+  "apkUrl": "https://github.com/ezeq-ol/livepulse/releases/download/v2.3.1/LivePulse-2.3.1.apk",
+  "sha256": "6f7366789cd533c161baddbbbd5faeba65702fc3078c5ce0ebef9ee7ab4206d0",
   "sizeBytes": 2553698,
   "minSdk": 26,
-  "releaseNotes": "Ícones de plataforma nos alertas e nova tela de atualizações, com download verificado e instalação confirmada pelo Android."
+  "releaseNotes": "Assistir prioriza Twitch, Kick ou YouTube instalados e preserva o canal/conteúdo do alerta. Se o app não atender ao link, abre no navegador. Símbolos de plataforma mantidos nas notificações."
 }
