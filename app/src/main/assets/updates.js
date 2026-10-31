@@ -11,7 +11,7 @@ const bytesText=n=>n>=1048576?(n/1048576).toFixed(1)+' MB':Math.round(n/1024)+' 
 function renderUpdates(){
  const u=state.updates||{},settings=state.updateSettings||{},release=u.available,configured=!!settings.feedUrl,busy=!!u.downloading;
  const signature=JSON.stringify([settings.feedUrl,settings.enabled]);if(!hydrated||signature!==configSignature){$('#update-feed-url').value=settings.feedUrl||'';$('#update-auto').checked=settings.enabled!==false;hydrated=true;configSignature=signature;}
- $('#update-version').textContent='INSTALADO · v'+(u.installedVersionName||'2.3.0');
+ $('#update-version').textContent='INSTALADO · v'+(u.installedVersionName||'2.3.1');
  $('#update-state-label').textContent=u.checking?'CONSULTANDO PUBLICAÇÃO':release?'NOVA VERSÃO ENCONTRADA':configured?'CONECTADO ÀS NOVIDADES':'AGUARDANDO ENDEREÇO';
  $('#update-title').textContent=u.checking?'Buscando novidades…':release?'Existe uma atualização disponível':configured?'Seu radar está atualizado':'Pronto para receber atualizações';
  $('#update-description').textContent=u.checking?'Consultando o endereço configurado.':release?'Uma nova versão está pronta para o seu dispositivo.':u.error?'A última consulta não foi concluída. Tente novamente.':configured?(settings.checkedAt?'Nenhuma versão mais recente e compatível foi encontrada.':'Toque em Verificar agora para consultar a publicação.'):'Você ainda não configurou a publicação. Quando tiver o endereço, informe abaixo.';

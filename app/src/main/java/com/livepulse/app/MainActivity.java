@@ -80,6 +80,16 @@ public final class MainActivity extends Activity {
     }
     private WebResourceResponse blocked(){return new WebResourceResponse("text/plain","UTF-8",403,"Blocked",Collections.emptyMap(),new ByteArrayInputStream(new byte[0]));}
     private void external(Uri uri){if(!"https".equals(uri.getScheme()))return;try{startActivity(new Intent(Intent.ACTION_VIEW,uri));}catch(Exception e){Toast.makeText(this,"Nenhum navegador disponível.",Toast.LENGTH_SHORT).show();}}
+    private void watch(String link){
+        if(link==null)return;
+        Uri uri=Uri.parse(link);if(!"https".equalsIgnoreCase(uri.getScheme()))return;
+        String platformPackage=PlatformLinks.packageFor(link);
+        if(!platformPackage.isEmpty()){
+            Intent nativeView=new Intent(Intent.ACTION_VIEW,uri).addCategory(Intent.CATEGORY_BROWSABLE).setPackage(platformPackage);
+            try{startActivity(nativeView);return;}catch(android.content.ActivityNotFoundException|SecurityException ignored){}
+        }
+        external(uri);
+    }
     public final class Bridge {
         @JavascriptInterface public String request(String path,String method,String json){return api.call(path,method,json);}
         @JavascriptInterface public void requestAsync(String id,String path,String method,String json){if(id==null||!id.matches("r[0-9]{1,12}"))return;bridgeWorker.execute(()->{String result=api.call(path,method,json);runOnUiThread(()->{if(web!=null)web.evaluateJavascript("window.LivePulseBridgeReply&&window.LivePulseBridgeReply("+JSONObject.quote(id)+","+JSONObject.quote(result)+")",null);});});}
@@ -98,7 +108,7 @@ public final class MainActivity extends Activity {
         @JavascriptInterface public void importBackup(){runOnUiThread(()->{Intent i=new Intent(Intent.ACTION_OPEN_DOCUMENT).addCategory(Intent.CATEGORY_OPENABLE).setType("*/*");startActivityForResult(i,62);});}
         @JavascriptInterface public void previewSound(){Alerts.play(MainActivity.this);}
         @JavascriptInterface public void setVolume(int value){Store s=Store.get(MainActivity.this);synchronized(s){try{s.state.getJSONObject("settings").put("volume",Math.max(0,Math.min(100,value)));s.save();}catch(Exception ignored){}}}
-        @JavascriptInterface public void openLink(String link){runOnUiThread(()->external(Uri.parse(link)));}
+        @JavascriptInterface public void openLink(String link){runOnUiThread(()->watch(link));}
         @JavascriptInterface public void notificationSettings(){runOnUiThread(()->{Intent intent=new Intent(android.provider.Settings.ACTION_APP_NOTIFICATION_SETTINGS).putExtra(android.provider.Settings.EXTRA_APP_PACKAGE,getPackageName());startActivity(intent);});}
     }
     private void enableMonitor(){
@@ -125,7 +135,7 @@ public final class MainActivity extends Activity {
         else{text="1. Crie um aplicativo no console Twitch e escolha cliente público para Device Code Flow.\n2. Salve apenas o Client ID em Integrações.\n3. Toque em Conectar Twitch e autorize o código no navegador.\n\nVocê não precisa digitar a senha da Twitch no LivePulse.";link="https://dev.twitch.tv/console/apps";}
         final String guide=text;AlertDialog.Builder dialog=new AlertDialog.Builder(this).setTitle("Configurar "+platform).setMessage(text).setNegativeButton("Abrir portal",(d,w)->openExternal(link)).setNeutralButton("Copiar instruções",(d,w)->{android.content.ClipboardManager clipboard=(android.content.ClipboardManager)getSystemService(CLIPBOARD_SERVICE);clipboard.setPrimaryClip(ClipData.newPlainText("LivePulse: configuração",guide));});dialog.setPositiveButton(next==null?"Entendi":"Escolher conta",(d,w)->{if(next!=null)next.run();});dialog.show();
     }
-    private void handleIntent(Intent intent){if(intent==null)return;if("show-updates".equals(intent.getAction())){pendingUpdateView=true;if(web!=null)web.evaluateJavascript("if(document.getElementById('updates'))view('updates')",null);intent.setAction(null);}if(intent.getData()!=null)Auth.callback(this,intent.getData());String id=intent.getStringExtra("eventId");if(id!=null&&id.matches("[a-f0-9-]{36}")){String url=null;Store s=Store.get(this);synchronized(s){try{url=s.find("events",id).optString("url");}catch(Exception ignored){}}if(url!=null){Reminders.acknowledge(this,id);openExternal(url);}intent.removeExtra("eventId");intent.removeExtra("watchUrl");}}
+    private void handleIntent(Intent intent){if(intent==null)return;if("show-updates".equals(intent.getAction())){pendingUpdateView=true;if(web!=null)web.evaluateJavascript("if(document.getElementById('updates'))view('updates')",null);intent.setAction(null);}if(intent.getData()!=null)Auth.callback(this,intent.getData());String id=intent.getStringExtra("eventId");if(id!=null&&id.matches("[a-f0-9-]{36}")){String url=null;Store s=Store.get(this);synchronized(s){try{url=s.find("events",id).optString("url");}catch(Exception ignored){}}if(url!=null){Reminders.acknowledge(this,id);watch(url);}intent.removeExtra("eventId");intent.removeExtra("watchUrl");}}
     @Override protected void onNewIntent(Intent intent){super.onNewIntent(intent);setIntent(intent);handleIntent(intent);}
     @Override protected void onResume(){super.onResume();if(web!=null){web.onResume();handler.removeCallbacks(foregroundTick);handler.post(foregroundTick);Updater.schedule(this);Updater.check(this,false);if(pendingInstallPermission){pendingInstallPermission=false;if(getPackageManager().canRequestPackageInstalls())Updater.install(this);else showMessage("Permissão não concedida. Você pode tentar instalar novamente depois.");}}}
     @Override protected void onPause(){handler.removeCallbacks(foregroundTick);if(web!=null)web.onPause();super.onPause();}
