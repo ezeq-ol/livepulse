@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
   "packageName": "com.livepulse.app",
-  "versionCode": 20401,
-  "versionName": "2.4.1",
-  "apkUrl": "https://github.com/ezeq-ol/livepulse/releases/download/v2.4.1/LivePulse-2.4.1.apk",
-  "sha256": "41e6f26dc7718a3bbbbbd9172d58c67b69693547980463fe9562b0ff10d86659",
+  "versionCode": 20402,
+  "versionName": "2.4.2",
+  "apkUrl": "https://github.com/ezeq-ol/livepulse/releases/download/v2.4.2/LivePulse-2.4.2.apk",
+  "sha256": "e4809e2b6c00edac2a54105f8eda766cb331d1f47ce1ca1a4375d185593dbfee",
   "sizeBytes": 2557931,
   "minSdk": 26,
-  "releaseNotes": "Estúdio atualiza os dados após salvar, limpa o arquivo escolhido e mostra o botão Alterações salvas com sucesso. Pronto para configurar outro canal ou evento."
+  "releaseNotes": "Conexão Kick adaptada para retorno HTTPS no GitHub Pages. Continuar no LivePulse encaminha a autorização ao APK, com validação de state, cliente e prazo, mantendo PKCE."
 }
