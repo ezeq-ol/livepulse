@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
   "packageName": "com.livepulse.app",
-  "versionCode": 20301,
-  "versionName": "2.3.1",
-  "apkUrl": "https://github.com/ezeq-ol/livepulse/releases/download/v2.3.1/LivePulse-2.3.1.apk",
-  "sha256": "6f7366789cd533c161baddbbbd5faeba65702fc3078c5ce0ebef9ee7ab4206d0",
-  "sizeBytes": 2553698,
+  "versionCode": 20400,
+  "versionName": "2.4.0",
+  "apkUrl": "https://github.com/ezeq-ol/livepulse/releases/download/v2.4.0/LivePulse-2.4.0.apk",
+  "sha256": "80658b484720b4e05c61e7f9c571103cb07e042638c7da22c6158ed487893f4e",
+  "sizeBytes": 2557931,
   "minSdk": 26,
-  "releaseNotes": "Assistir prioriza Twitch, Kick ou YouTube instalados e preserva o canal/conteúdo do alerta. Se o app não atender ao link, abre no navegador. Símbolos de plataforma mantidos nas notificações."
+  "releaseNotes": "Novo editor de som: Editar som no cartão, canal e evento explícitos, prévia sem salvar, Salvar mudanças e Descartar. Áudio aplicado somente à combinação selecionada."
 }
