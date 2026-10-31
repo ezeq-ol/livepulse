@@ -31,7 +31,7 @@ public final class Store {
             state=new JSONObject(new String(cipher.doFinal(all,12,all.length-12),"UTF-8"));
         } catch(FileNotFoundException e) { state=fresh(); }
         catch(Exception e) { throw new IllegalStateException("Não foi possível abrir os dados locais. Os arquivos foram preservados.",e); }
-        try{if(!state.getJSONObject("settings").has("remindersEnabled"))state.getJSONObject("settings").put("remindersEnabled",true);JSONArray channels=state.getJSONArray("channels");for(int i=0;i<channels.length();i++){JSONArray f=channels.getJSONObject(i).getJSONArray("filters");boolean has=false;for(int j=0;j<f.length();j++)if(f.getString(j).equals("unknown"))has=true;if(!has&&state.optInt("schemaVersion")<21)f.put("unknown");}state.put("schemaVersion",21);}catch(Exception e){throw new IllegalStateException(e);}
+        try{PlatformConfig.applyDefaults(state.getJSONObject("credentials"));if(!state.getJSONObject("settings").has("remindersEnabled"))state.getJSONObject("settings").put("remindersEnabled",true);JSONArray channels=state.getJSONArray("channels");for(int i=0;i<channels.length();i++){JSONArray f=channels.getJSONObject(i).getJSONArray("filters");boolean has=false;for(int j=0;j<f.length();j++)if(f.getString(j).equals("unknown"))has=true;if(!has&&state.optInt("schemaVersion")<21)f.put("unknown");}state.put("schemaVersion",21);}catch(Exception e){throw new IllegalStateException(e);}
     }
     private JSONObject fresh() {
         try{return new JSONObject("{\"channels\":[],\"events\":[],\"settings\":{\"interval\":120,\"volume\":75,\"monitorEnabled\":false},\"credentials\":{},\"integrations\":[],\"lastPoll\":null}");}
