@@ -71,6 +71,23 @@ public final class MainActivity extends Activity {
         web.loadUrl("https://app.livepulse.local/");
         handleIntent(getIntent());
     }
+    public void configureKickSecret(){
+        android.widget.EditText input=new android.widget.EditText(this);
+        input.setInputType(android.text.InputType.TYPE_CLASS_TEXT|android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        input.setHint("Client Secret da Kick");
+        android.app.AlertDialog dialog=new android.app.AlertDialog.Builder(this)
+            .setTitle("Configuração privada da Kick")
+            .setMessage("O Client ID já está integrado. No modo local, a Kick também exige o Secret do aplicativo. Ele será salvo criptografado apenas neste aparelho. Sem essa configuração ou um serviço de autenticação, a conexão não pode ser concluída.")
+            .setView(input).setNegativeButton("Cancelar",null).setPositiveButton("Salvar e conectar",null).create();
+        dialog.setOnShowListener(ignored->dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener(v->{
+            String secret=input.getText().toString().trim();
+            if(secret.isEmpty()){input.setError("Informe o Secret para continuar.");return;}
+            try{Store store=Store.get(this);synchronized(store){store.state.getJSONObject("credentials").put("kickSecret",secret);store.save();}dialog.dismiss();Auth.connect(this,"kick");}
+            catch(Exception error){showMessage("Não foi possível salvar a configuração privada da Kick.");}
+        }));
+        dialog.getWindow();dialog.show();
+        if(dialog.getWindow()!=null)dialog.getWindow().addFlags(android.view.WindowManager.LayoutParams.FLAG_SECURE);
+    }
     public void openUpdateInstaller(File file){
         if(isFinishing()||isDestroyed())return;
         if(!getPackageManager().canRequestPackageInstalls()){

@@ -23,9 +23,17 @@ public final class Updater {
     public static final int NOTICE_ID=47833;
     private static final String CHANNEL="livepulse_updates";
     public static JSONObject settings(Store s)throws Exception{
-        JSONObject settings=s.state.optJSONObject("updateSettings");if(settings!=null)return settings;
+        JSONObject settings=s.state.optJSONObject("updateSettings");
         String url="";boolean enabled=true;
         try(InputStream in=s.context.getAssets().open("update-config.json")){byte[] config=read(in,8192);JSONObject j=new JSONObject(new String(config,"UTF-8"));url=j.optString("feedUrl","").trim();enabled=j.optBoolean("enabled",true);if(!url.isEmpty())Net.https(url);}catch(Exception ignored){}
+        if(settings!=null){
+            if(settings.optString("feedUrl").trim().isEmpty()&&!url.isEmpty()){
+                settings.put("feedUrl",url).put("checkedAt",0);
+                if(!settings.has("enabled"))settings.put("enabled",enabled);
+                s.save();
+            }
+            return settings;
+        }
         settings=new JSONObject().put("feedUrl",url).put("enabled",enabled).put("checkedAt",0);s.state.put("updateSettings",settings);return settings;
     }
     private static JSONObject record(Store s)throws Exception{JSONObject r=s.state.optJSONObject("updates");if(r==null){r=new JSONObject();s.state.put("updates",r);}return r;}
@@ -38,7 +46,7 @@ public final class Updater {
     public static void configure(Context c,String input,boolean enabled)throws Exception{
         String url=input==null?"":input.trim();if(url.length()>2000)throw new IllegalArgumentException("Endereço muito longo.");if(!url.isEmpty())Net.https(url);
         Store s=Store.get(c);synchronized(s){epoch.incrementAndGet();JSONObject settings=settings(s);settings.put("feedUrl",url).put("enabled",enabled).put("checkedAt",0);s.state.put("updates",new JSONObject());s.save();}
-        c.getSystemService(NotificationManager.class).cancel(NOTICE_ID);schedule(c);if(!url.isEmpty())check(c,true);
+        c.getSystemService(NotificationManager.class).cancel(NOTICE_ID);schedule(c);if(enabled&&!url.isEmpty())check(c,true);
     }
     public static void schedule(Context c){
         Store s=Store.get(c);boolean enabled=false;synchronized(s){try{JSONObject p=settings(s);enabled=p.optBoolean("enabled",true)&&!p.optString("feedUrl").isEmpty();}catch(Exception ignored){}}

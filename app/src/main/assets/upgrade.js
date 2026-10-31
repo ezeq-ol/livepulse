@@ -30,9 +30,8 @@ render=function(){
  upgradeBaseRender();
  $('#repeat-alerts').checked=state.settings.remindersEnabled!==false;
  for(const p of ['twitch','kick','youtube']){
-  const connected=!!state.accounts?.[p];
-  if(p==="kick"){const missing=!connected&&!state.configured?.kickSecret;const connect=document.querySelector('[data-connect="kick"]');connect.disabled=missing;connect.title=missing?"Conexão Kick requer configuração privada ou serviço de autenticação.":"";}$(`#${p}-status`).textContent=connected?'● Conta conectada':$(`#${p}-status`).textContent;
-  $(`#auth-${p}`).textContent=(p==='kick'&&!connected&&!state.configured?.kickSecret?'Kick indisponível nesta instalação: falta a configuração privada de autenticação.':state.authStatus?.[p])||(connected?'Conexão autorizada neste dispositivo.':'Primeiro acesso? Abra a configuração guiada.');
+  const connected=!!state.accounts?.[p];$(`#${p}-status`).textContent=connected?'● Conta conectada':$(`#${p}-status`).textContent;
+  $(`#auth-${p}`).textContent=(p==='kick'&&!connected&&!state.configured?.kickSecret?'Toque em Conectar Kick para concluir a configuração privada neste aparelho.':state.authStatus?.[p])||(connected?'Conexão autorizada neste dispositivo.':'Primeiro acesso? Abra a configuração guiada.');
   document.querySelector(`[data-disconnect="${p}"]`).classList.toggle('hidden',!connected);
  }
  const signature=JSON.stringify(state.channels.map(c=>[c.id,c.name]));if(signature!==upgrades.signature){const selected=$('#sound-channel').value;upgrades.signature=signature;$('#sound-channel').innerHTML='<option value="">Todos os canais</option>'+state.channels.map(c=>`<option value="${c.id}">${escape(c.name||c.slug)}</option>`).join('');if(state.channels.some(c=>c.id===selected))$('#sound-channel').value=selected;}

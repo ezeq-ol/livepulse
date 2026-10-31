@@ -32,7 +32,8 @@ public final class Auth {
         worker.execute(()->{try{
             Store s=Store.get(a);JSONObject credentials;synchronized(s){credentials=new JSONObject(s.state.getJSONObject("credentials").toString());}
             String id=credentials.optString(platform+"Id"),secret=credentials.optString(platform+"Secret");
-            if(id.isEmpty()||(platform.equals("kick")&&secret.isEmpty())){a.runOnUiThread(()->a.showGuide(platform));return;}
+            if(platform.equals("kick")&&secret.isEmpty()){a.runOnUiThread(()->a.configureKickSecret());return;}
+            if(id.isEmpty()){a.runOnUiThread(()->a.showGuide(platform));return;}
             if(platform.equals("twitch")){
                 JSONObject device=Net.oauth("https://id.twitch.tv/oauth2/device",form("client_id",id,"scopes",""));if(device.optString("device_code").isEmpty())throw new IllegalArgumentException("Não foi possível gerar o código. Cadastre um aplicativo Twitch do tipo público.");
                 device.put("platform","twitch").put("expiresAt",System.currentTimeMillis()+device.optLong("expires_in",600)*1000);
