@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
   "packageName": "com.livepulse.app",
-  "versionCode": 20405,
-  "versionName": "2.4.5",
-  "apkUrl": "https://github.com/ezeq-ol/livepulse/releases/download/v2.4.5/LivePulse-2.4.5.apk",
-  "sha256": "cfffcc614c5b32489b1f0494b38b429cfb1c743cb8cf6a3f2afb93185e4a1b17",
+  "versionCode": 20408,
+  "versionName": "2.4.8",
+  "apkUrl": "https://github.com/ezeq-ol/livepulse/releases/download/v2.4.8/LivePulse-2.4.8.apk",
+  "sha256": "44a71a664bb810ed8e8e2206035bcf34ab3dd5b5457cda6b53984ba411c897e3",
   "sizeBytes": 2557931,
   "minSdk": 26,
-  "releaseNotes": "Campos de Client ID e Secret removidos da interface; credenciais salvas preservadas. Kick exige configuração privada prévia."
+  "releaseNotes": "Atualização automática integrada com ativar/desativar. YouTube com configuração privada no aparelho; credenciais salvas preservadas."
 }
