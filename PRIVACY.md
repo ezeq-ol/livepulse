@@ -1,6 +1,6 @@
 # Política de privacidade do LivePulse
 
-Última atualização: 30 de outubro de 2026. Refere-se à implementação Android 2.3.0.
+Última atualização: 31 de outubro de 2026. Refere-se à implementação Android 2.4.2.
 
 Responsável pela distribuição: **by SAD_ZECKXS**. Contato de privacidade e suporte: **sounoob773@gmail.com**.
 
@@ -45,3 +45,7 @@ Você pode gerenciar canais, limpar o histórico, desconectar contas e controlar
 - [Privacidade GitHub](https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement)
 
 Mudanças nas funcionalidades ou nos fluxos de dados exigem revisão desta política. Estes documentos ainda não estão incorporados à interface do APK 2.3.0.
+
+## Retorno de autorização da Kick (2.4.2)
+
+A Kick exige um retorno HTTPS. Após autorização, o navegador acessa https://ezeq-ol.github.io/livepulse/kick-callback.html, hospedado no GitHub Pages, com código temporário e state na URL. O GitHub pode receber esses parâmetros e dados técnicos da conexão segundo sua política. A página remove a consulta do endereço visível, não carrega recursos externos e oferece Continuar no LivePulse. Ela não recebe Client Secret, access token ou refresh token e não faz a troca do código por token. O APK confere state, prazo e PKCE e realiza essa troca diretamente com a Kick. A remoção visual da consulta não elimina registros eventualmente mantidos pelo provedor de hospedagem.

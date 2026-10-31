@@ -17,7 +17,7 @@ import java.util.Collections;
 public final class Auth {
     private static final ScheduledExecutorService worker=Executors.newSingleThreadScheduledExecutor();
     private static final String YOUTUBE_SCOPE="https://www.googleapis.com/auth/youtube.readonly";
-    public static final String KICK_REDIRECT="livepulse://oauth/kick";
+    public static final String KICK_REDIRECT=KickOAuth.REDIRECT;
     private static JSONObject accounts(Store s)throws Exception{JSONObject a=s.state.optJSONObject("oauth");if(a==null){a=new JSONObject();s.state.put("oauth",a);}return a;}
     public static void message(Context c,String p,String msg){Store s=Store.get(c);synchronized(s){try{JSONObject a=s.state.optJSONObject("authStatus");if(a==null){a=new JSONObject();s.state.put("authStatus",a);}a.put(p,msg);s.save();}catch(Exception ignored){}}}
     private static String form(String...parts)throws Exception{StringBuilder s=new StringBuilder();for(int i=0;i<parts.length;i+=2){if(i>0)s.append('&');s.append(Net.enc(parts[i])).append('=').append(Net.enc(parts[i+1]));}return s.toString();}
@@ -40,7 +40,7 @@ public final class Auth {
                 String uri=device.getString("verification_uri");if(!Net.https(uri).getHost().equals("www.twitch.tv")&&!Net.https(uri).getHost().equals("id.twitch.tv"))throw new IllegalArgumentException("Endereço de autorização inválido.");a.openExternal(uri);pollTwitch(a.getApplicationContext(),device,id);
             }else{
                 byte[] random=new byte[32];new SecureRandom().nextBytes(random);String verifier=Base64.encodeToString(random,Base64.URL_SAFE|Base64.NO_WRAP|Base64.NO_PADDING),state=Rules.id();String challenge=Base64.encodeToString(MessageDigest.getInstance("SHA-256").digest(verifier.getBytes("US-ASCII")),Base64.URL_SAFE|Base64.NO_WRAP|Base64.NO_PADDING);
-                synchronized(s){s.state.put("authPending",new JSONObject().put("platform","kick").put("state",state).put("verifier",verifier).put("expiresAt",System.currentTimeMillis()+600000));s.save();}
+                synchronized(s){s.state.put("authPending",new JSONObject().put("platform","kick").put("clientId",id).put("state",state).put("verifier",verifier).put("expiresAt",System.currentTimeMillis()+600000));s.save();}
                 message(a,platform,"Autorize sua conta Kick no navegador.");a.openExternal("https://id.kick.com/oauth/authorize?"+form("client_id",id,"response_type","code","redirect_uri",KICK_REDIRECT,"scope","channel:read user:read","state",state,"code_challenge",challenge,"code_challenge_method","S256"));
             }
         }catch(Exception e){message(a,platform,"Conexão não concluída. Confira o cadastro e a internet.");a.showMessage(e.getMessage());}});
@@ -55,12 +55,18 @@ public final class Auth {
             message(c,"twitch","Autorização cancelada ou expirada. Toque em Conectar para tentar novamente.");
         }catch(Exception e){message(c,"twitch","Falha de conexão durante a autorização. Tente Conectar novamente.");}},interval,TimeUnit.SECONDS);
     }
-    public static void callback(MainActivity a,Uri uri){if(uri==null||!KICK_REDIRECT.equals(uri.getScheme()+"://"+uri.getHost()+uri.getPath()))return;
-        worker.execute(()->{try{Store s=Store.get(a);JSONObject pending,credentials;synchronized(s){pending=s.state.optJSONObject("authPending");credentials=new JSONObject(s.state.getJSONObject("credentials").toString());if(pending==null)throw new IllegalArgumentException("Nenhuma conexão Kick pendente.");pending=new JSONObject(pending.toString());s.state.remove("authPending");s.save();}
-            String state=uri.getQueryParameter("state");if(!pending.optString("platform").equals("kick")||state==null||!MessageDigest.isEqual(state.getBytes("UTF-8"),pending.optString("state").getBytes("UTF-8"))||pending.optLong("expiresAt")<System.currentTimeMillis())throw new IllegalArgumentException("Retorno de autorização inválido ou expirado.");
-            if(uri.getQueryParameter("error")!=null)throw new IllegalArgumentException("Autorização cancelada.");String code=uri.getQueryParameter("code");if(code==null)throw new IllegalArgumentException("Código de autorização ausente.");
+    public static void callback(MainActivity a,Uri uri){if(uri==null||!KickOAuth.isAppReturn(uri.toString()))return;
+        worker.execute(()->{try{
+            Store s=Store.get(a);JSONObject pending,credentials;String code=uri.getQueryParameter("code");
+            synchronized(s){
+                pending=s.state.optJSONObject("authPending");credentials=new JSONObject(s.state.getJSONObject("credentials").toString());
+                KickOAuth.validate(pending,uri.getQueryParameter("state"),System.currentTimeMillis(),credentials.optString("kickId"));
+                if(uri.getQueryParameter("error")!=null){s.state.remove("authPending");s.save();throw new IllegalArgumentException("Autorização cancelada.");}
+                if(code==null||code.isEmpty()||code.length()>4096)throw new IllegalArgumentException("Código de autorização ausente ou inválido.");
+                pending=new JSONObject(pending.toString());s.state.remove("authPending");s.save();
+            }
             JSONObject token=Net.oauth("https://id.kick.com/oauth/token",form("grant_type","authorization_code","client_id",credentials.getString("kickId"),"client_secret",credentials.getString("kickSecret"),"redirect_uri",KICK_REDIRECT,"code_verifier",pending.getString("verifier"),"code",code));save(a,"kick",token);a.showMessage("Conta Kick conectada.");
-        }catch(Exception e){message(a,"kick","Não foi possível conectar. Verifique o Client ID e o endereço de retorno no portal Kick.");a.showMessage(e.getMessage());}});
+        }catch(Exception e){message(a,"kick","Não foi possível conectar. Verifique o Client ID e o endereço HTTPS de retorno no portal Kick e inicie uma nova conexão.");a.showMessage(e.getMessage());}});
     }
     private static AuthorizationRequest googleRequest(){return AuthorizationRequest.builder().setRequestedScopes(Collections.singletonList(new Scope(YOUTUBE_SCOPE))).build();}
     public static void google(MainActivity a){
